@@ -52,15 +52,12 @@ jobs:
       run: |
        sudo ln -sf /usr/bin/python2.7 /usr/bin/python
        bash sync_wireguard.sh
-       bash syncanykernel3.sh
        bash synckernelsu_all.sh
        bash build_kernel_byd_git_clang.sh
-       rm -rf tools/AnyKernel3/.git
-       rm -rf tools/AnyKernel3/.github
-
+       
 
     - name: Upload BYD-Kernel
       uses: actions/upload-artifact@v3
       with:
         name: Mi8_sdm845-BYD_Kernel-${{ steps.get_time.outputs.TIME }}
-        path: "tools/AnyKernel3/*"
+        path: "out/arch/arm64/boot/Image*"
