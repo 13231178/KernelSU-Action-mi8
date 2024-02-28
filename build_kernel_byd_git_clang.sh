@@ -20,7 +20,8 @@ start_time=$(date +%Y.%m.%d-%I_%M)
 
 start_time_sum=$(date +%s)
 
-make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig#ursa_xiaomi_sdm845_ksu_defconfig
+make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
+#ursa_xiaomi_sdm845_ksu_defconfig
 # 定义编译线程数
 make ARCH=arm64 O=out CC=clang -j$(nproc --all) 2>&1 | tee kernel_log-${start_time}.txt
 
