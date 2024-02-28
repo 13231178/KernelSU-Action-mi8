@@ -8,4 +8,4 @@ else
 	echo "Don't find KernelSU Floder,good."
 fi
 
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s 0.7.2
+curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.7.2
