@@ -1,4 +1,4 @@
-name: Build Xiaomi Mi 8 Pro or Explorer Edition
+name: Build Xiaomi Mi 8 
 
 on:
   workflow_dispatch:
