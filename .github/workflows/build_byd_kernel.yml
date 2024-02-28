@@ -14,12 +14,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
       CCACHE_MAXSIZE: "2G"
       CCACHE_HARDLINK: "true"
+      
     steps:
+    - name: Set swap to 10G 将swap设置为10G
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
     - name: Checkout
       uses: actions/checkout@v3
       with:
