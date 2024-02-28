@@ -47,11 +47,11 @@ jobs:
       id: get_time
       run: |
         echo "TIME=$(TZ=UTC-8 date +%m%d%H%M )" >> $GITHUB_OUTPUT
-
+    #bash sync_wireguard.sh
     - name: Build Kernel
       run: |
        sudo ln -sf /usr/bin/python2.7 /usr/bin/python
-       bash sync_wireguard.sh
+       
        bash synckernelsu_all.sh
        bash build_kernel_byd_git_clang.sh
        
