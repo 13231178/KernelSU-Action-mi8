@@ -1,4 +1,4 @@
-name: Build BYD-Kernel For Xiaomi 8 EE & UD
+name: Build BYD-Kernel For Xiaomi 8 节约磁盘
 on:
   workflow_dispatch:
   schedule:
