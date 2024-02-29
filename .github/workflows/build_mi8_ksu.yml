@@ -25,13 +25,13 @@ jobs:
       run: |
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler -y
+        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
+        echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
         git clone https://github.com/hasanbulat/clang-r353983c1.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
-        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
-        cd KernelSU
-        echo KSU_VERSION=$remote_version-$(($(git rev-list --count HEAD) + 10200)) | tee -a $GITHUB_ENV
+
     - name: Build Kernel
       run: |
        export PATH=$PATH:$(pwd)/clang-r353983c1/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
