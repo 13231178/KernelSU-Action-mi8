@@ -66,8 +66,6 @@ jobs:
         path: out/arch/arm64/boot/Image*
     - name: release 释放
       uses: softprops/action-gh-release@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKENS }}
       with:
         tag_name: mi8-ksu-${{ env.KSU_VERSION }}
         name: Device:dipper
