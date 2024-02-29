@@ -4,13 +4,13 @@ on:
   schedule:
       # Run once at 12:00 on Saturday.. See http://crontab.guru
       - cron: '00 12 * * 6'
+  #KernelSU分支代码变动后自动编译
   push:
     branches:
-      - HEAD
+      - KernelSU
   pull_request:
       branches:
       - HEAD
-
 jobs:
   build:
     runs-on: ubuntu-latest
