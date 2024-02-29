@@ -1,4 +1,4 @@
-name: Build Xiaomi 8
+name: build_mi8_ksu
 on:
   workflow_dispatch:
   schedule:
