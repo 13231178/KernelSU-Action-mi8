@@ -33,7 +33,7 @@ jobs:
 
     - name: Set up ccache
       uses: hendrikmuhs/ccache-action@v1.2
-
+    #sudo apt-get install device-tree-compiler -y = dtc
     - name: Install dependencies
       run: |
         sudo apt-get update -y 
