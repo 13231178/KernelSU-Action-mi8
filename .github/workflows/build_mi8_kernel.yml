@@ -38,9 +38,9 @@ jobs:
       run: |
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler -y
-        git clone https://github.com/13231178/proton-clang.git
-        
-    
+        git clone https://github.com/hasanbulat/clang-r353983c1.git
+        git clone https://github.com/radcolor/aarch64-linux-gnu.git
+        git clone https://github.com/radcolor/arm-linux-gnueabi.git
     - name: GetTime
       id: get_time
       run: |
@@ -51,7 +51,7 @@ jobs:
       run: |
        sudo ln -sf /usr/bin/python2.7 /usr/bin/python
        bash synckernelsu_all.sh
-       export PATH=$PATH:$(pwd)/proton-clang/bin
+       export PATH=$PATH:$(pwd)/clang-r353983c1/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
        export CC=clang
        export CLANG_TRIPLE=aarch64-linux-gnu-
        export CROSS_COMPILE=aarch64-linux-gnu-
