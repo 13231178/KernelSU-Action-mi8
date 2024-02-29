@@ -41,6 +41,9 @@ jobs:
         git clone https://github.com/hasanbulat/clang-r353983c1.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+        cd KernelSU
+        echo "KSU_VERSION=$(($(git rev-list --count HEAD) + 10200))" >> $GITHUB_ENV
     - name: GetTime
       id: get_time
       run: |
@@ -65,12 +68,12 @@ jobs:
     - name: Upload to Release‌‌...
       uses: actions/upload-artifact@v3
       with:
-        name: mi8 ksu ${{ env.BUILD_TIME }}
+        name: mi8 ksu ${{ env.KSU_VERSION }}
         path: out/arch/arm64/boot/Image*
     - name: release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: mi8 ksu ${{ steps.get_time.outputs.TIME }}
+        tag_name: mi8 ksu ${{ env.KSU_VERSION }}
         body: |
           Device:dipper
         files: |
