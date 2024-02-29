@@ -47,7 +47,6 @@ jobs:
     #bash build_kernel_byd_git_clang.sh
     - name: Build Kernel
       run: |
-       sudo ln -sf /usr/bin/python2.7 /usr/bin/python
        export PATH=$PATH:$(pwd)/clang-r353983c1/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
        export CC=clang
        export CLANG_TRIPLE=aarch64-linux-gnu-
