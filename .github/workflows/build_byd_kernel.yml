@@ -1,4 +1,4 @@
-name: Build BYD-Kernel For Xiaomi 8 节约磁盘
+name: Build Xiaomi 8
 on:
   workflow_dispatch:
   schedule:
@@ -47,17 +47,25 @@ jobs:
       id: get_time
       run: |
         echo "TIME=$(TZ=UTC-8 date +%m%d%H%M )" >> $GITHUB_OUTPUT
-    #bash sync_wireguard.sh
+    #bash build_kernel_byd_git_clang.sh
     - name: Build Kernel
       run: |
        sudo ln -sf /usr/bin/python2.7 /usr/bin/python
-       
        bash synckernelsu_all.sh
-       bash build_kernel_byd_git_clang.sh
-       
+       export PATH=$PATH:$(pwd)/proton-clang/bin
+       export CC=clang
+       export CLANG_TRIPLE=aarch64-linux-gnu-
+       export CROSS_COMPILE=aarch64-linux-gnu-
+       export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+       export CONFIG_BUILD_ARM64_DT_OVERLAY=y
+       export ARCH=arm64
+       export DTC_EXT=dtc
+       mkdir out
+       make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
+       make ARCH=arm64 O=out CC=clang -j$(nproc --all) 
 
     - name: Upload BYD-Kernel
       uses: actions/upload-artifact@v3
       with:
-        name: Mi8_sdm845-BYD_Kernel-${{ steps.get_time.outputs.TIME }}
+        name: Mi8_sdm845_Kernel-${{ steps.get_time.outputs.TIME }}
         path: "out/arch/arm64/boot/Image*"
