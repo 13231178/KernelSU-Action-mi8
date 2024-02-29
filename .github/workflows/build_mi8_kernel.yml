@@ -62,9 +62,16 @@ jobs:
        mkdir out
        make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
        make ARCH=arm64 O=out CC=clang -j$(nproc --all) 
-
-    - name: Upload BYD-Kernel
+    - name: Upload to Release‌‌...
       uses: actions/upload-artifact@v3
       with:
-        name: Mi8_sdm845_Kernel-${{ steps.get_time.outputs.TIME }}
-        path: "out/arch/arm64/boot/Image*"
+        name: dtbo-polaris-${{ env.BUILD_TIME }}
+        path: out/arch/arm64/boot/Image*
+    - name: release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: mi8 ksu ${{ steps.get_time.outputs.TIME }}
+        body: |
+          Device:dipper
+        files: |
+          out/arch/arm64/boot/Image*
