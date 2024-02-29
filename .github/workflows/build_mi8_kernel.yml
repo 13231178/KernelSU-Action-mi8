@@ -32,13 +32,13 @@ jobs:
       run: |
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler -y
+        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
+        echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         git clone https://github.com/hasanbulat/clang-r353983c1.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
-        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
 
-        echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
     - name: GetTime
       id: get_time
       run: |
