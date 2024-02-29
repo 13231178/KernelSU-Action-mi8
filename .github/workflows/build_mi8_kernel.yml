@@ -62,13 +62,13 @@ jobs:
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
       with:
-        name: mi8 ksu ${{ env.KSU_VERSION }}
+        name: mi8-ksu-${{ env.KSU_VERSION }}
         path: out/arch/arm64/boot/Image*
     - name: release 释放
       uses: softprops/action-gh-release@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKENS }}
       with:
-        tag_name: mi8 ksu ${{ env.KSU_VERSION }}
+        tag_name: mi8-ksu-${{ env.KSU_VERSION }}
         name: Device:dipper
         files: out/arch/arm64/boot/Image*
