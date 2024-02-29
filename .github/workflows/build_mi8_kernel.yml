@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update -y 
-
+        sudo apt-get install device-tree-compiler 
         git clone https://github.com/13231178/proton-clang.git
         
     
