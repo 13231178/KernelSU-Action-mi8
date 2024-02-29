@@ -68,5 +68,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: mi8-ksu-${{ env.KSU_VERSION }}
-        name: Device:dipper
+        name: mi8-ksu-${{ env.KSU_VERSION }}
         files: out/arch/arm64/boot/Image*
