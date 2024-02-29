@@ -2,7 +2,7 @@
 # Automatically generated file; DO NOT EDIT.
 # Linux/arm64 4.9.186 Kernel Configuration
 #
-CONFIG_LOCALVERSION="-perf-g10af718"
+CONFIG_LOCALVERSION="-perf"
 CONFIG_LOCALVERSION_AUTO=y
 CONFIG_ARM64=y
 CONFIG_64BIT=y
