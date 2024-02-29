@@ -30,8 +30,6 @@ jobs:
     #sudo apt-get install device-tree-compiler -y = dtc
     - name: Install dependencies
       run: |
-        sudo apt-get update -y 
-        sudo apt-get install device-tree-compiler -y
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
