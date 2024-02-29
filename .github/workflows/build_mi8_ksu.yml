@@ -2,15 +2,12 @@ name: build_mi8_ksu
 on:
   workflow_dispatch:
   schedule:
-      # Run once at 12:00 on Saturday.. See http://crontab.guru
+      # 星期六中午12点跑一次
       - cron: '00 12 * * 6'
   #KernelSU分支代码变动后自动编译
   push:
     branches:
       - KernelSU
-  pull_request:
-      branches:
-      - HEAD
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,15 +16,11 @@ jobs:
       uses: pierotofy/set-swap-space@master
       with:
         swap-size-gb: 10
-    - name: Checkout
+    - name: Checkout 检出本仓库源码到虚拟机
       uses: actions/checkout@v3
       with:
         submodules: 'true'
         fetch-depth: 100
-
-    - name: Set up ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-    #sudo apt-get install device-tree-compiler -y = dtc
     - name: Install dependencies
       run: |
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
@@ -36,13 +29,6 @@ jobs:
         git clone https://github.com/hasanbulat/clang-r353983c1.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
-
-    - name: GetTime
-      id: get_time
-      run: |
-        sudo timedatectl set-timezone Asia/Shanghai
-        echo "TIME=$(TZ=UTC-8 date +%m%d%H%M )" >> $GITHUB_OUTPUT
-    #bash build_kernel_byd_git_clang.sh
     - name: Build Kernel
       run: |
        export PATH=$PATH:$(pwd)/clang-r353983c1/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
