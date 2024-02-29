@@ -14,12 +14,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    #env:
-    #  CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
-    #  CCACHE_NOHASHDIR: "true"
-    #  CCACHE_MAXSIZE: "2G"
-    #  CCACHE_HARDLINK: "true"
-      
     steps:
     - name: Set swap to 10G 将swap设置为10G
       uses: pierotofy/set-swap-space@master
