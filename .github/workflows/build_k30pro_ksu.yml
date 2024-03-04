@@ -31,7 +31,7 @@ jobs:
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
-        git clone https://github.com/hasanbulat/clang-r353983c1.git
+        git clone https://github.com/hasanbulat/clang-r377782c.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
 
@@ -45,6 +45,9 @@ jobs:
        export CONFIG_BUILD_ARM64_DT_OVERLAY=y
        export ARCH=arm64
        #export DTC_EXT=dtc
+       export LD=ld.lld
+       export NM=llvm-nm
+       export OBJCOPY=llvm-objcopy
        mkdir out
        make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
        make ARCH=arm64 O=out CC=clang -j$(nproc --all) 
