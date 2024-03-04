@@ -1,0 +1,61 @@
+name: build_k30pro_ksu
+on:
+  workflow_dispatch:
+  schedule:
+      # 星期六中午12点跑一次
+      - cron: '00 12 * * 6'
+  #KernelSU分支代码变动后自动编译
+  push:
+    branches:
+      - KernelSU
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set swap to 10G 将swap设置为10G
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
+    #- name: Checkout 检出本仓库源码到虚拟机
+    #  uses: actions/checkout@v3
+    #  with:
+    #    submodules: 'true'
+    #    fetch-depth: 100
+    - name: Install dependencies
+      run: |
+        sudo apt-get update -y 
+        sudo apt-get install device-tree-compiler -y
+        rm -rf *
+        git clone https://github.com/MiCode/Xiaomi_Kernel_OpenSource -b cmi-r-oss ./
+        
+        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
+        echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
+        git clone https://github.com/hasanbulat/clang-r353983c1.git
+        git clone https://github.com/radcolor/aarch64-linux-gnu.git
+        git clone https://github.com/radcolor/arm-linux-gnueabi.git
+
+    - name: Build Kernel
+      run: |
+       export PATH=$PATH:$(pwd)/clang-r353983c1/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
+       export CC=clang
+       export CLANG_TRIPLE=aarch64-linux-gnu-
+       export CROSS_COMPILE=aarch64-linux-gnu-
+       export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+       export CONFIG_BUILD_ARM64_DT_OVERLAY=y
+       export ARCH=arm64
+       #export DTC_EXT=dtc
+       mkdir out
+       make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
+       make ARCH=arm64 O=out CC=clang -j$(nproc --all) 
+    - name: Upload to Release‌‌... 上传构建工件
+      uses: actions/upload-artifact@v3
+      with:
+        name: k30pro-ksu-${{ env.KSU_VERSION }}
+        path: out/arch/arm64/boot/Image*
+    - name: release 释放
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: k30pro-ksu-${{ env.KSU_VERSION }}
+        name: k30pro-ksu-${{ env.KSU_VERSION }}
+        files: out/arch/arm64/boot/Image*
