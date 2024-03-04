@@ -49,7 +49,7 @@ jobs:
        export NM=llvm-nm
        export OBJCOPY=llvm-objcopy
        mkdir out
-       make ARCH=arm64 O=out CC=clang generic_xiaomi_sdm845_dipper_ksu_defconfig
+       make ARCH=arm64 O=out CC=clang lmi_user_defconfig
        make ARCH=arm64 O=out CC=clang -j$(nproc --all) 
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
