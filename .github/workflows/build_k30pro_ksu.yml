@@ -47,7 +47,7 @@ jobs:
        export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
        export CONFIG_BUILD_ARM64_DT_OVERLAY=y
        export ARCH=arm64
-       #export DTC_EXT=dtc
+       export DTC_EXT=dtc
        #export LD=ld.lld
        #export NM=llvm-nm
        #export OBJCOPY=llvm-objcopy
