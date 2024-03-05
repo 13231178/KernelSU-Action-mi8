@@ -48,8 +48,8 @@ jobs:
        export CONFIG_BUILD_ARM64_DT_OVERLAY=y
        export ARCH=arm64
        #export DTC_EXT=dtc
-       #export LD=ld.lld
-       #export NM=llvm-nm
+       export LD=ld.lld
+       export NM=llvm-nm
        #export OBJCOPY=llvm-objcopy
        mkdir out
        make ARCH=arm64 O=out CC=clang lmi_user_defconfig
