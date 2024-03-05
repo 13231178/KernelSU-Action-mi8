@@ -34,13 +34,13 @@ jobs:
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
         #r353983c1 clang-r377782c
-        git clone https://github.com/hasanbulat/clang-r399163b.git
+        git clone https://github.com/hasanbulat/clang-r377782c.git
         git clone https://github.com/radcolor/aarch64-linux-gnu.git
         git clone https://github.com/radcolor/arm-linux-gnueabi.git
 
     - name: Build Kernel
       run: |
-       export PATH=$PATH:$(pwd)/clang-r399163b/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
+       export PATH=$PATH:$(pwd)/clang-r377782c/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
        export CC=clang
        export CLANG_TRIPLE=aarch64-linux-gnu-
        export CROSS_COMPILE=aarch64-linux-gnu-
