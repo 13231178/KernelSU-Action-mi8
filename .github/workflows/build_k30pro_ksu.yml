@@ -33,7 +33,7 @@ jobs:
         #删除带 -Werror\ 的一整行
         #sed -i '/-Werror\\/'d techpack/audio/asoc/codecs/bolero/Kbuild
         
-        sed -i 's/-Werror //' scripts/Kbuild.include
+        #sed -i 's/-Werror //' scripts/Kbuild.include
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
