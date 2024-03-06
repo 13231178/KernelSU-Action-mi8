@@ -26,7 +26,7 @@ jobs:
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
-        git clone https://github.com/Neternels/android_kernel_aresin.git  ./
+        git clone https://github.com/anotherjin/android_kernel_xiaomi_ares.git  ./
 
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
