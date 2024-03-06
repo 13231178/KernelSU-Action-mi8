@@ -29,6 +29,7 @@ jobs:
         git clone https://github.com/YukoStudioROM/android_kernel_xiaomi_lmi ./
         #sed -i 's/YYLTYPE yylloc;/extern YYLTYPE yylloc;/' scripts/dtc/dtc-lexer.l
         #sed -i 's/-Werror //' scripts/Kconfig.include
+        sed -i 's/-Werror //' scripts/Kbuild.include
         #sed -i 's/ccflags-y += -Werror//' drivers/vservices/Makefile
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
