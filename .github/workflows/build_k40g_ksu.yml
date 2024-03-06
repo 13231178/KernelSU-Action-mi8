@@ -44,7 +44,7 @@ jobs:
        export ANDROID_MAJOR_VERSION=r
        mkdir out
        make O=out ares_user_defconfig
-       make O=out -j$(nproc --all)
+       make O=out LD=ld.lld -j$(nproc --all)
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
       with:
