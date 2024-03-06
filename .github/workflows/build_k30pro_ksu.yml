@@ -30,7 +30,7 @@ jobs:
         #sed -i 's/YYLTYPE yylloc;/extern YYLTYPE yylloc;/' scripts/dtc/dtc-lexer.l
         #sed -i 's/-Werror //' scripts/Kconfig.include
         #删除带 -Werror\ 的一整行
-        sed -i '/-Werror\\/'d techpack/audio/asoc/codecs/bolero/Kbuild scripts/Kbuild.include
+        sed -i '/-Werror\\/'d techpack/audio/asoc/codecs/bolero/Kbuild
         
         sed -i 's/-Werror //' scripts/Kbuild.include
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
