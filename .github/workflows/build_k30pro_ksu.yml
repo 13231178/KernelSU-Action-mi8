@@ -52,8 +52,8 @@ jobs:
        export CONFIG_BUILD_ARM64_DT_OVERLAY=y
        export ARCH=arm64
        #export DTC_EXT=dtc
-       export LLVM=1
-       export DEPMOD=depmod
+       #export LLVM=1
+       #export DEPMOD=depmod
        #export NM=llvm-nm
        #export OBJCOPY=llvm-objcopy
        mkdir out
