@@ -27,32 +27,33 @@ jobs:
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
-        git clone https://github.com/anotherjin/android_kernel_xiaomi_ares.git  ./
+        git clone https://github.com/Tkpointz/android_kernel_aresin.git -b T  ./
         #sed -i 's/*hw_item_dump()/*hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
-        git clone https://github.com/afaneh-toolchain/prebuilts_clang_host_linux-x86_clang-r383902.git
-        git clone https://github.com/radcolor/aarch64-linux-gnu.git
-        git clone https://github.com/radcolor/arm-linux-gnueabi.git
+        git clone --depth=1  https://gitlab.com/LeCmnGend/proton-clang.git -b clang-13  clang
     - name: Build Kernel
       run: |
-       export PATH=$PATH:$(pwd)/prebuilts_clang_host_linux-x86_clang-r383902/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
+       export PATH=$PATH:$(pwd)/clang/bin
        export SUBARCH=arm64
        mkdir out
-       args="-j$(nproc --all) \
-        ARCH=arm64 \
-        SUBARCH=arm64 \
-        O=out \
-        CC=clang \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-        CLANG_TRIPLE=aarch64-linux-gnu- \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        STRIP=llvm-strip "
-       make ${args} ares_user_defconfig
-       make ${args} -j$(nproc --all)
+       make O=out ARCH=arm64 ares_user_defconfig
+       make -j$(nproc --all) O=out \
+                            ARCH=arm64 \
+                            CC="clang" \
+                            CLANG_TRIPLE=aarch64-linux-gnu- \
+                            CROSS_COMPILE="${PWD}/clang/bin/aarch64-linux-gnu-" \
+                            CROSS_COMPILE_ARM32="${PWD}/clang/bin/arm-linux-gnueabi-" \
+                            LD=ld.lld \
+                            STRIP=llvm-strip \
+                            AS=llvm-as \
+                            AR=llvm-ar \
+                            NM=llvm-nm \
+                  		      OBJCOPY=llvm-objcopy \
+                            OBJDUMP=llvm-objdump \
+                            CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee error.log 
+
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
       with:
