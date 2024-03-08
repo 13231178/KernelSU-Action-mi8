@@ -44,10 +44,7 @@ jobs:
        export CROSS_COMPILE=aarch64-linux-android-
        export CROSS_COMPILE_ARM32=arm-linux-androideabi-
        export CLANG_TRIPLE=aarch64-linux-gnu-
-       export LD_LIBRARY_PATH=$(pwd)/prebuilts_clang_host_linux-x86_clang-r383902/lib64:$$LD_LIBRARY_PATH
-       export LD=ld.lld
-       export NM=llvm-nm
-       export OBJCOPY=llvm-objcopy
+
        mkdir out
        make O=out aresin_defconfig
        make O=out -j$(nproc --all)
