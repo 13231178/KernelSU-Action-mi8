@@ -27,7 +27,7 @@ jobs:
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
-        git clone https://github.com/Tkpointz/android_kernel_aresin.git  ./
+        git clone https://github.com/anotherjin/android_kernel_xiaomi_ares.git  ./
         #sed -i 's/*hw_item_dump()/*hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
@@ -51,7 +51,7 @@ jobs:
         AR=llvm-ar \
         NM=llvm-nm \
         STRIP=llvm-strip "
-       make ${args} aresin_defconfig
+       make ${args} ares_user_defconfig
        make ${args} -j$(nproc --all)
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
