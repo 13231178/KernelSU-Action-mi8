@@ -33,16 +33,16 @@ jobs:
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
         git clone https://github.com/afaneh-toolchain/prebuilts_clang_host_linux-x86_clang-r383902.git
-        git clone https://github.com/radcolor/aarch64-linux-gnu.git
-        git clone https://github.com/radcolor/arm-linux-gnueabi.git
+        git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git aarch64-linux-android-4.9
+        git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git arm-linux-androideabi
 
     - name: Build Kernel
       run: |
-       export PATH=$PATH:$(pwd)/prebuilts_clang_host_linux-x86_clang-r383902/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
+       export PATH=$PATH:$(pwd)/prebuilts_clang_host_linux-x86_clang-r383902/bin:$(pwd)/aarch64-linux-android-4.9/bin:$(pwd)/arm-linux-androideabi/bin
        export CC=clang
-       export CROSS_COMPILE=aarch64-linux-gnu-
        export ARCH=arm64
-       export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+       export CROSS_COMPILE=aarch64-linux-android-
+       export CROSS_COMPILE_ARM32=arm-linux-androideabi-
        export CLANG_TRIPLE=aarch64-linux-gnu-
        mkdir out
        make O=out ares_defconfig
