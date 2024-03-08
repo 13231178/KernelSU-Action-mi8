@@ -28,7 +28,7 @@ jobs:
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
         git clone https://github.com/Yuyuko1024/kernel_xiaomi_chopin.git  ./
-        sed -i 's/static char *hw_item_dump()/static char *hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
+        sed -i 's/*hw_item_dump()/*hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
         echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
