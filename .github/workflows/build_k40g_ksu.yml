@@ -42,8 +42,8 @@ jobs:
        export CC=clang
        export ARCH=arm64
        export CROSS_COMPILE=aarch64-linux-android-
-       export CROSS_COMPILE_ARM32=arm-linux-androideabi-
-       #export CLANG_TRIPLE=aarch64-linux-gnu-
+       #export CROSS_COMPILE_ARM32=arm-linux-androideabi-
+       export CLANG_TRIPLE=aarch64-linux-gnu-
        mkdir out
        make O=out aresin_defconfig
        make O=out -j$(nproc --all)
