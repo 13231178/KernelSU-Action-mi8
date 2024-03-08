@@ -21,12 +21,12 @@ jobs:
     #  with:
     #    submodules: 'true'
     #    fetch-depth: 100
+    #https://github.com/mt6893/android_kernel_xiaomi_mt6893
     - name: Install dependencies
       run: |
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
-	#https://github.com/mt6893/android_kernel_xiaomi_mt6893
         git clone https://github.com/anotherjin/android_kernel_xiaomi_ares.git  ./
 
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
