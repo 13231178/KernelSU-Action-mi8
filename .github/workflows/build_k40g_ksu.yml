@@ -39,7 +39,6 @@ jobs:
       run: |
        export PATH=$PATH:$(pwd)/prebuilts_clang_host_linux-x86_clang-r383902/bin:$(pwd)/aarch64-linux-gnu/bin:$(pwd)/arm-linux-gnueabi/bin
        export SUBARCH=arm64
-       ccache -M 10G
        mkdir out
        args="-j$(nproc --all) \
         ARCH=arm64 \
