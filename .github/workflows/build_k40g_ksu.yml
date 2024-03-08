@@ -27,7 +27,7 @@ jobs:
         sudo apt-get update -y 
         sudo apt-get install device-tree-compiler python2 -y
         rm -rf *
-        git clone https://github.com/anotherjin/android_kernel_xiaomi_ares.git  ./
+        git clone https://github.com/mt6893/android_kernel_xiaomi_mt6893.git  ./
 
         remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
@@ -45,7 +45,7 @@ jobs:
        export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
        export CLANG_TRIPLE=aarch64-linux-gnu-
        mkdir out
-       make O=out ares_user_defconfig
+       make O=out ares_defconfig
        make O=out -j$(nproc --all)
     - name: Upload to Release‌‌... 上传构建工件
       uses: actions/upload-artifact@v3
