@@ -42,7 +42,7 @@ jobs:
         echo CONFIG_KPROBE_EVENTS=y >> arch/arm64/configs/pissarro_user_defconfig
         echo 'CONFIG_LOCALVERSION=""' >> arch/arm64/configs/pissarro_user_defconfig
         
-        git clone --depth=1  https://gitlab.com/LeCmnGend/proton-clang.git -b clang-13  clang
+        #git clone --depth=1  https://gitlab.com/LeCmnGend/proton-clang.git -b clang-13  clang
     # Install needed tools
     - name: Install needed tools
       run: |
