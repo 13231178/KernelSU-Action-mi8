@@ -35,7 +35,7 @@ jobs:
         echo CONFIG_KPROBES=y >> arch/arm64/configs/ares_user_defconfig
         echo CONFIG_HAVE_KPROBES=y >> arch/arm64/configs/ares_user_defconfig
         echo CONFIG_KPROBE_EVENTS=y >> arch/arm64/configs/ares_user_defconfig
-        echo 'CONFIG_LOCALVERSION=""'>> arch/arm64/configs/ares_user_defconfig
+        echo 'CONFIG_LOCALVERSION=""' >> arch/arm64/configs/ares_user_defconfig
         git clone --depth=1  https://gitlab.com/LeCmnGend/proton-clang.git -b clang-13  clang
     - name: Build Kernel
       run: |
