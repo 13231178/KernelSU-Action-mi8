@@ -1,0 +1,92 @@
+name: build_note11pro_ksu
+on:
+  workflow_dispatch:
+  schedule:
+      # 星期六中午12点跑一次
+      - cron: '00 12 * * 6'
+  #KernelSU分支代码变动后自动编译
+  push:
+    branches:
+      - KernelSU
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set swap to 10G 将swap设置为10G
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
+    #- name: Checkout 检出本仓库源码到虚拟机
+    #  uses: actions/checkout@v3
+    #  with:
+    #    submodules: 'true'
+    #    fetch-depth: 100
+    #https://github.com/mt6893/android_kernel_xiaomi_mt6893
+    - name: Install dependencies
+      run: |
+        sudo apt update -y && sudo apt upgrade -y
+        sudo apt install -y git-core gnupg flex bc bison build-essential zip \
+        curl zlib1g-dev g++-multilib libc6-dev-i386 lib32ncurses5-dev \
+        xsltproc unzip python2 python3 python3-pip python3-dev \
+        python-is-python3 schedtool ccache libtinfo5 libncurses5 lzop tmux \
+        patchelf git-lfs ripgrep clang-11 &> /dev/null
+        
+        rm -rf *
+        git clone https://github.com/13231178/kernel_xiaomi_pissarro.git -b T  ./
+        #sed -i 's/*hw_item_dump()/*hw_item_dump(void)/' arch/arm64/kernel/hwconf_manager.c
+        remote_version=$(curl -L https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r .tag_name)
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s $remote_version
+        echo KSU_VERSION=$remote_version | tee -a $GITHUB_ENV
+        echo CONFIG_KPROBES=y >> arch/arm64/configs/pissarro_user_defconfig
+        echo CONFIG_HAVE_KPROBES=y >> arch/arm64/configs/pissarro_user_defconfig
+        echo CONFIG_KPROBE_EVENTS=y >> arch/arm64/configs/pissarro_user_defconfig
+        echo 'CONFIG_LOCALVERSION=""' >> arch/arm64/configs/pissarro_user_defconfig
+        
+        git clone --depth=1  https://gitlab.com/LeCmnGend/proton-clang.git -b clang-13  clang
+    # Install needed tools
+    - name: Install needed tools
+      run: |
+        mkdir toolchain
+        cd toolchain
+
+        curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman" || exit 1
+
+        chmod -x antman
+        
+        echo 'Setting up toolchain in $(PWD)/toolchain'
+        bash antman -S || exit 1
+        
+        echo 'Build libarchive for bsdtar'
+        git clone https://github.com/libarchive/libarchive || true
+        cd libarchive
+        bash build/autogen.sh
+        ./configure
+        make -j$(nproc)
+        cd ..
+        
+        echo 'Patch for glibc'
+        wget https://gist.githubusercontent.com/itsHanibee/fac63ea2fc0eca7b8d7dcbb7eb678c3b/raw/beacf8f0f71f4e8231eaa36c3e03d2bee9ae3758/patch-for-old-glibc.sh
+        export PATH=$(pwd)/libarchive:$PATH
+        bash patch-for-old-glibc.sh
+    - name: Build Kernel
+      run: |
+        #make O=out ARCH=arm64 pissarro_user_defconfig
+        export ARCH=arm64
+        PATH=$PWD/toolchain/bin:$PATH
+        export USE_HOST_LEX=yes
+        mkdir -p out
+        make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 pissarro_user_defconfig
+
+        make O=out CC=clang LLVM=1 LLVM_IAS=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- -j$(nproc)
+
+    - name: Upload to Release‌‌... 上传构建工件
+      uses: actions/upload-artifact@v3
+      with:
+        name: note11pro-ksu-${{ env.KSU_VERSION }}
+        path: out/arch/arm64/boot/Image*
+    - name: release 释放
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: note11pro-ksu-${{ env.KSU_VERSION }}
+        name: note11pro-ksu-${{ env.KSU_VERSION }}
+        files: out/arch/arm64/boot/Image*
